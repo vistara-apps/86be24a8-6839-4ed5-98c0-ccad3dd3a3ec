@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ConnectWallet } from '@coinbase/onchainkit/wallet';
-import { Identity } from '@coinbase/onchainkit/identity';
+import { Identity, Avatar, Name, Address } from '@coinbase/onchainkit/identity';
 import { useAccount } from 'wagmi';
 import { UploadSection } from './components/UploadSection';
 import { GeneratorOptions } from './components/GeneratorOptions';
@@ -45,7 +45,11 @@ export default function HomePage() {
           <div className="space-y-6">
             {/* User Identity */}
             <div className="glass-effect rounded-lg p-4 flex items-center justify-between">
-              <Identity address={address} />
+              <Identity address={address}>
+                <Avatar />
+                <Name />
+                <Address />
+              </Identity>
               <ConnectWallet />
             </div>
 

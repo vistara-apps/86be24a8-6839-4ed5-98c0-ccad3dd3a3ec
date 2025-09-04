@@ -1,13 +1,16 @@
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-  baseURL: "https://openrouter.ai/api/v1",
-  dangerouslyAllowBrowser: true,
-});
+function getOpenAIClient() {
+  return new OpenAI({
+    apiKey: process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY || 'demo-key',
+    baseURL: "https://openrouter.ai/api/v1",
+    dangerouslyAllowBrowser: true,
+  });
+}
 
 export async function generateAdVariations(imageUrl: string, count: number) {
   try {
+    const openai = getOpenAIClient();
     const variations = [];
     
     for (let i = 0; i < count; i++) {
@@ -46,6 +49,7 @@ export async function generateAdVariations(imageUrl: string, count: number) {
 
 export async function generateImageVariation(imageUrl: string, prompt: string) {
   try {
+    const openai = getOpenAIClient();
     // In a real implementation with DALL-E or similar:
     const response = await openai.images.generate({
       model: "dall-e-3",
@@ -54,7 +58,7 @@ export async function generateImageVariation(imageUrl: string, prompt: string) {
       size: "1024x1024",
     });
 
-    return response.data[0]?.url;
+    return response.data?.[0]?.url;
   } catch (error) {
     console.error('Image generation failed:', error);
     // Fallback to original image for demo
